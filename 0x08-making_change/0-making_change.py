@@ -1,20 +1,18 @@
 #!/usr/bin/python3
-"""Change making module.
-"""
+"""Making change O(n)"""
 
 
 def makeChange(coins, total):
-    if total <= 0:
+    """Clasic Bottom-Up dynamic programming"""
+    temp_value = 0
+    coins.sort(reverse=True)
+
+    if total < 0:
         return 0
 
-    # Create an array to store the minimum number of coins required to reach each value
-    min_coins = [float('inf')] * (total + 1)
-    min_coins[0] = 0
-
     for coin in coins:
-        for i in range(coin, total + 1):
-            # Update the minimum number of coins required for each value
-            min_coins[i] = min(min_coins[i], min_coins[i - coin] + 1)
+        if total % coin <= total:
+            temp_value += total // coin
+            total = total % coin
 
-    # Return the minimum number of coins required to reach the total value
-    return min_coins[total] if min_coins[total] != float('inf') else -1
+    return temp_value if total == 0 else -1
